@@ -8,13 +8,14 @@ let scaleSlider;
 let resetButton;
 let saveButton;
 
+
 function preload() {
     img = loadImage('assets/moonwalk.jpg');
 }
 
 function setup() {
     var canvas = createCanvas(720, 406);
-    canvas.parent('sketch-holder');
+    canvas.parent('app');
 
     brushSlider = createSlider(0, 255, 100);
     brushSlider.parent('brushSlider');
