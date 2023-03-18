@@ -31,6 +31,7 @@ function createUI() {
 
 // Runs once when Mode changed
 function modeSelect() {
+    appMode = modeRadio.value();
     if (appMode == 'Scale') {
         brushSlider.hide();
         scaleSlider.show();
@@ -39,5 +40,5 @@ function modeSelect() {
         brushSlider.show();
         scaleSlider.hide();
     }
+    mask.initMode();
 }
-

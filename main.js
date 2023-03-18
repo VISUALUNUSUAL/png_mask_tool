@@ -41,11 +41,7 @@ function draw() {
     // Update slider values and UI 
     zoom = scaleSlider.value();
     brushSize = brushSlider.value();
-    appMode = modeRadio.value();
     
-    if(appMode != appMode){
-       mask.initMode(); 
-    }
     // Display original photo with normalised dimensions (W,H) and coordinates (X,Y)
     photo.normalise(zoom);
     photo.updateDrag();
