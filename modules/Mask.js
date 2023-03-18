@@ -1,6 +1,6 @@
 class Mask {
     constructor(resizer) {
-        
+
         this.photo = resizer;
 
         this.x = this.photo.x;
@@ -20,20 +20,28 @@ class Mask {
 
     initMode() {
         if (appMode == 'Scale') {
-            this.tempBuffer = createGraphics(this.w, this.h);
+            this.tempBuffer = createImage(this.w, this.h);
+            this.tempBuffer.copy(this.buff, 0, 0, this.buff.width, this.buff.height, 0, 0, this.tempBuffer.width, this.tempBuffer.height);
+
         }
         if (appMode == 'Brush') {
             // create new main buffer with  size of temp buffer
             this.buff = createGraphics(this.w, this.h);
-
             // Copy temp buffer into main buffer with new dimensions
-            this.buff.copy(this.tempBuffer, 0, 0, this.w, this.h, 0, 0, this.w, this.h);
+            this.buff.copy(this.tempBuffer, 0, 0, Math.round(this.w), Math.round(this.h), 0, 0, Math.round(this.w), Math.round(this.h));
         }
     }
 
     reset() {
-        mask.buff.clear();
-        mask.buff = createGraphics(this.photo.w, this.photo.h)
+        //        this.buff.clear();
+        //        this.tempBuffer.clear();
+        this.tempBuffer = createImage(this.w, this.h);
+        this.buff = createGraphics(this.photo.w, this.photo.h)
+    }
+
+    updateScale() {
+        this.tempBuffer.resize(this.w, this.h);
+
     }
 
     drawMask() {
@@ -43,23 +51,14 @@ class Mask {
     }
 
     show() {
-
         if (appMode == 'Scale') {
-            this.tempBuffer.resizeCanvas(this.w, this.h);
-            this.tempBuffer.copy(this.buff, 0, 0, this.buff.width, this.buff.height, 0, 0, this.tempBuffer.width, this.tempBuffer.height);
-            push();
-            tint(255,0,0,127);
             image(this.tempBuffer, this.x, this.y, this.w, this.h);
-            pop();
         }
         if (appMode == 'Brush') {
             if (mouseIsPressed) {
                 this.drawMask();
             }
-            push();
-            tint(255,0,0,127);
             image(this.buff, this.x, this.y, this.w, this.h);
-            pop();
         }
     }
 }

@@ -16,7 +16,6 @@ function output(_content, _mask) {
     //convert _content from pg to image
     var contentImg = createImage(_content.width, _content.height);
     contentImg.copy(_content, 0, 0, _content.width, _content.height, 0, 0, _content.width, _content.height);
-    contentImg.mask(img);
-    
+    contentImg.mask(img)
     return contentImg;
 }

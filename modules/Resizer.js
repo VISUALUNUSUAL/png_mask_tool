@@ -92,7 +92,6 @@ class Resizer {
     }
 
     pressed() {
-        // Did I click on the rectangle?
         if (mouseX > this.x && mouseX < this.x + this.w && mouseY > this.y && mouseY < this.y + this.h) {
             this.dragging = true;
             this.offsetX = this.x - mouseX;
