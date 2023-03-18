@@ -24,12 +24,12 @@ class Resizer {
 
     reset() {
         if (this.ratio < 1) {
-            this.w = Math.round(maxSize * this.ratio);
-            this.h = Math.round(maxSize);
+            this.w = maxSize * this.ratio;
+            this.h = maxSize;
 
         } else {
-            this.w = Math.round(maxSize);
-            this.h = Math.round(maxSize / this.ratio);
+            this.w = maxSize;
+            this.h = maxSize / this.ratio;
         }
         this.x = width / 2 - this.w / 2;
         this.y = height / 2 - this.h / 2;
@@ -43,12 +43,12 @@ class Resizer {
         this.s = scl;
 
         if (this.ratio < 1) {
-            this.w = Math.round(maxSize * this.ratio) * this.s;
-            this.h = Math.round(maxSize) * this.s;
+            this.w = maxSize * this.ratio * this.s;
+            this.h = maxSize * this.s;
 
         } else {
-            this.w = Math.round(maxSize) * this.s;
-            this.h = Math.round(maxSize / this.ratio) * this.s;
+            this.w = maxSize * this.s;
+            this.h = maxSize / this.ratio * this.s;
         }
 
         this.x += (this.nw - this.w) / 2;
@@ -92,6 +92,7 @@ class Resizer {
     }
 
     pressed() {
+        // Did I click on the rectangle?
         if (mouseX > this.x && mouseX < this.x + this.w && mouseY > this.y && mouseY < this.y + this.h) {
             this.dragging = true;
             this.offsetX = this.x - mouseX;
