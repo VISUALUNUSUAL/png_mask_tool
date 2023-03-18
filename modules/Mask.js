@@ -47,13 +47,19 @@ class Mask {
         if (appMode == 'Scale') {
             this.tempBuffer.resizeCanvas(this.w, this.h);
             this.tempBuffer.copy(this.buff, 0, 0, this.buff.width, this.buff.height, 0, 0, this.tempBuffer.width, this.tempBuffer.height);
+            push();
+            tint(255,0,0,127);
             image(this.tempBuffer, this.x, this.y, this.w, this.h);
+            pop();
         }
         if (appMode == 'Brush') {
             if (mouseIsPressed) {
                 this.drawMask();
             }
+            push();
+            tint(255,0,0,127);
             image(this.buff, this.x, this.y, this.w, this.h);
+            pop();
         }
     }
 }
