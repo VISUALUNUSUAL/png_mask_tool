@@ -9,11 +9,11 @@ function createUI() {
     modeRadio.changed(modeSelect);
 
     scaleSlider = createSlider(1, 3, 1, .01); // min, max, start
-    scaleSlider.position(32, 80); // x and y
+    scaleSlider.position(32, 64); // x and y
     scaleSlider.size(256, 20); // width and height 
 
     brushSlider = createSlider(4, 200, 60, .01); // min, max, start
-    brushSlider.position(32, 80); // x and y
+    brushSlider.position(32, 64); // x and y
     brushSlider.size(256, 20); // width and height 
 
     resetBtn = createButton('Reset');
@@ -24,21 +24,11 @@ function createUI() {
     saveBtn = createButton('Save');
     saveBtn.position(32, 128);
     saveBtn.size(112, 32); // width and height 
-    saveBtn.mousePressed(saveMask);
-
-    scaleSlider.hide();
+    saveBtn.mousePressed(saveImg);
 }
 
-// Runs once when Mode changed
-function modeSelect() {
-    appMode = modeRadio.value();
-    if (appMode == 'Scale') {
-        brushSlider.hide();
-        scaleSlider.show();
-    }
-    if (appMode == 'Brush') {
-        brushSlider.show();
-        scaleSlider.hide();
-    }
-    mask.initMode();
+function saveImg() {
+    console.log("saved");
 }
+
+

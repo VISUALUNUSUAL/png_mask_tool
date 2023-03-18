@@ -1,97 +1,46 @@
-// Graphics
-let srcPhoto, mask;
-let photo;
+let photo, maskShape;
 
-// UI
-let modeRadio, scaleSlider, brushSlider, resetBtn, saveBtn;
+let scrWidth, scrHeight, imgWidth, imgHeight;
 
-// Defaults
-let appMode = 'Brush';
-let maxSize = 640;
 let brushSize = 60;
-let zoom = 1;
+let canvasScale = 100;
+
+let scaleSlider;
+let scaleFactor = 1;
+
+//let maskContainer;
 
 function preload() {
-    srcPhoto = loadImage('assets/photo_V.jpg');
+    photo = loadImage('assets/moonwalk.jpg');
 }
 
 function setup() {
 
-    // Create App canvas with window dimensions (fullscreen)
     createCanvas(windowWidth, windowHeight);
-    background(200);
+    maskShape = new Mask(photo, scaleFactor);
 
-    // get dimensions (W,H) based on resized photo that we will use for mask and image
-    // get coordinates (X,Y) for top-left corner based on resized photo to position in the center of screen
-    // create background photo object 
-    // resize photo proportionally to fit in canvasSize
-    photo = new Resizer(srcPhoto);
-
-    // create p5 graphics mask buffer with dimensions (W,H) and coordinates (X,Y)
-    mask = new Mask(photo);
-
-    // create UI to control brush size, image scale, reset button and save button
     createUI();
 }
 
 function draw() {
-    // App canvas background
-    background(200);
+    background(255);
+    maskShape.over();
+    maskShape.update();
+    maskShape.resize(scaleSlider.value());
+    maskShape.show();
 
-    // Update slider values and UI 
-    zoom = scaleSlider.value();
-    brushSize = brushSlider.value();
-    
-    // Display original photo with normalised dimensions (W,H) and coordinates (X,Y)
-    photo.normalise(zoom);
-    photo.updateDrag();
-    photo.show();
+    if (mouseIsPressed) {
+        maskShape.pressed();
+    }
 
-    // Display mask buffer with normilised dimensions (W,H) and coordinates (X,Y)
-    mask.update();
-    mask.show();
-
+//    maskShape.s = scaleSlider.value();
 }
 
-function mousePressed() {
-    photo.pressed();
-}
 
 function mouseReleased() {
-    photo.released();
-
+    maskShape.released();
 }
 
 function windowResized() {
     resizeCanvas(windowWidth, windowHeight);
-    photo.normalise(zoom);
-}
-
-// Clear mask buffer and reset dimensions and position
-function resetMask() {
-
-    // restore default values for brush and scale
-    brushSize = 60;
-    zoom = 1;
-
-    // reset to defaults coordinates
-    photo.reset();
-
-    // Clear mask buffer
-    mask.reset();
-
-    // set default slaiders vallues
-    scaleSlider.value(zoom);
-    brushSlider.value(brushSize);
-}
-
-
-// Convert p5 Graphics mask buffer into an image
-// Apply mask image on the original photo with original dimensions
-// Save result as png file
-function saveMask() {
-    let result = output(srcPhoto, mask.buff);
-
-    result.save('OutputImage', 'png');
-    console.log("result saved");
 }
