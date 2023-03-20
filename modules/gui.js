@@ -11,7 +11,6 @@ function createUI() {
     scaleSlider = createSlider(1, 3, 1, .01); // min, max, start
     scaleSlider.position(32, 80); // x and y
     scaleSlider.size(256, 20); // width and height 
-    scaleSlider.changed(scl);
 
 
     brushSlider = createSlider(4, 200, 60, .01); // min, max, start
@@ -31,12 +30,12 @@ function createUI() {
     scaleSlider.hide();
 }
 
-function scl(){
-    mask.updateScale();
-}
 // Runs once when Mode changed
 function modeSelect() {
+    
     appMode = modeRadio.value();
+    mask.appMode(appMode);
+    
     if (appMode == 'Scale') {
         brushSlider.hide();
         scaleSlider.show();
@@ -45,5 +44,4 @@ function modeSelect() {
         brushSlider.show();
         scaleSlider.hide();
     }
-    mask.initMode();
 }
