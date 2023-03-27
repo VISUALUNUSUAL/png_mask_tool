@@ -1,47 +1,39 @@
-function createUI() {
+_('brush').checked = true;
+_('zoom').checked = false;
 
-    modeRadio = createRadio();
-    modeRadio.position(32, 32);
-    modeRadio.option('Brush');
-    modeRadio.option('Scale');
-    modeRadio.selected('Brush');
-    modeRadio.style('width', '160px');
-    modeRadio.changed(modeSelect);
-
-    scaleSlider = createSlider(1, 3, 1, .01); // min, max, start
-    scaleSlider.position(32, 80); // x and y
-    scaleSlider.size(256, 20); // width and height 
-
-
-    brushSlider = createSlider(4, 200, 60, .01); // min, max, start
-    brushSlider.position(32, 80); // x and y
-    brushSlider.size(256, 20); // width and height 
-
-    resetBtn = createButton('Reset');
-    resetBtn.position(176, 128);
-    resetBtn.size(112, 32); // width and    height 
-    resetBtn.mousePressed(resetMask);
-
-    saveBtn = createButton('Save');
-    saveBtn.position(32, 128);
-    saveBtn.size(112, 32); // width and height 
-    saveBtn.mousePressed(saveMask);
-
-    scaleSlider.hide();
+_('sizeRange').onchange = function () {
+    var size = map(_('sizeRange').value, 2, 20, 4, 20);
+    drawSize = size;
 }
 
-// Runs once when Mode changed
-function modeSelect() {
-    
-    appMode = modeRadio.value();
-    mask.appMode(appMode);
-    
-    if (appMode == 'Scale') {
-        brushSlider.hide();
-        scaleSlider.show();
+_('zoomRange').onchange = function () {
+    var zooM = map(_('sizeRange').value, 2, 20, 4, 20);
+    zoom = zooM;
+}
+
+_('zoom').onchange = function () {
+    penStyle = 'zoom';
+    _('brush').checked = false;
+}
+
+_('brush').onchange = function () {
+    penStyle = 'brush';
+    _('zoom').checked = false;
+}
+
+_('clearCanvas').onclick = function (ev) {
+    ev.preventDefault();
+    if (confirm("Do you want to clear paint")) {
+        setup();
+        document.body.style.background = '#c8c8c8';
+    } else {
+        return;
     }
-    if (appMode == 'Brush') {
-        brushSlider.show();
-        scaleSlider.hide();
-    }
+}
+
+_('saveCanvas').onclick = function (ev) {
+    ev.preventDefault();
+    saveCanvas(paint, 'sketch', 'png');
+    setup();
+    document.body.style.background = '#c8c8c8';
 }

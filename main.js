@@ -1,65 +1,71 @@
-// Graphics
-let srcPhoto, mask;
-let photo;
+var brushColor;
+var bgColor;
+var drawSize;
+var penStyle;
 
-// UI
-let modeRadio, scaleSlider, brushSlider, resetBtn, saveBtn;
+var paint;
+var photo;
+var zoom;
 
-// Defaults
-let appMode = 'Brush';
-let brushSize = 60;
-let zoom = 1;
+let buff_size;
+let buff_w_scl;
+let buff_h_scl;
+let buff_width;
+let buff_height;
 
 function preload() {
-    srcPhoto = loadImage('assets/photo_V.jpg');
+    photo = loadImage('assets/photo_H.jpg');
+}
+
+function _(id) {
+    return document.getElementById(id);
 }
 
 function setup() {
+
+    zoom = 1;
+
+    buff_size = min(innerWidth, innerHeight-250)
+    ph_ratio = photo.width / photo.height;
+
+    if (ph_ratio < 1) {
+        buff_w_scl = 1 * ph_ratio * zoom;
+        buff_h_scl = 1 * zoom;
+    } else {
+        buff_w_scl = 1 * zoom;
+        buff_h_scl = 1 / ph_ratio * zoom;
+    }
+
+    buff_width = buff_size * buff_w_scl
+    buff_height = buff_size * buff_h_scl
+
     pixelDensity(1);
-    createCanvas(windowWidth, windowHeight);
-    background(200);
+    paint = createCanvas(buff_width, buff_height);
+    //    paint.parent("mydiv");
 
-    //    let maxSize = 640;
-    let maxSize = min(windowWidth, windowHeight);
-    mask = new Mask(srcPhoto, maxSize);
+    brushColor = '#f03e3e';
+    bgColor = '#c8c8c8';
+    drawSize = 50;
+    penStyle = 'brush';
 
-    createUI();
+    image(photo, 0, 0, buff_width, buff_height)
 }
 
-function draw() {
-    background(200);
-
-    brushSize = brushSlider.value();
-    appMode = modeRadio.value();
-    zoom = scaleSlider.value();
-
-    mask.resize(zoom);
-    mask.drawMask(brushSize);
-    mask.show();
-}
-
-function mousePressed() {
-    mask.pressed();
-}
-
-function mouseReleased() {
-    mask.released();
+function mouseDragged() {
+    stroke(brushColor);
+    strokeWeight(drawSize);
+    if (penStyle === 'brush') {
+        line(pmouseX, pmouseY, mouseX, mouseY);
+    } else if (penStyle === 'zoom') {
+        ellipse(mouseX, mouseY, drawSize, drawSize);
+    }
 }
 
 function windowResized() {
-    resizeCanvas(windowWidth, windowHeight);
-    
-}
-
-function resetMask() {
-    // set default sliders vallues
-    zoom = 1;
-    brushSize = 60;
-    scaleSlider.value(zoom);
-    brushSlider.value(brushSize);
-    mask.reset();
-}
-
-function saveMask() {
-    mask.save();
+    buff_size = min(innerWidth, innerHeight-250)
+    buff_width = buff_size * buff_w_scl
+    buff_height = buff_size * buff_h_scl
+    resizeCanvas(buff_width, buff_height)
+    //    buff.resizeCanvas(buff_width, buff_height)
+    image(photo, 0, 0, buff_width, buff_height)
 }

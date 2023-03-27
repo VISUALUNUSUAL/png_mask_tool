@@ -1,6 +1,6 @@
 class Mask {
     constructor(srcPhoto, maxSize) {
-        this.rollover = false; // Is the mouse over the area?\
+        this.rollover = false; 
         this.srcPhoto = srcPhoto;
         this.ratio = srcPhoto.width / srcPhoto.height;
         this.maxSize = maxSize;
@@ -54,18 +54,16 @@ class Mask {
         this.brushSize = brushSize;
         if (mouseIsPressed) {
             if (appMode == 'Brush') {
-                this.mask.stroke(240, 62, 62);
+//                this.mask.noStroke();
                 this.mask.strokeWeight(this.brushSize);
-                this.mask.line(pmouseX - this.x, pmouseY - this.y, mouseX - this.x, mouseY - this.y, );
-
+                this.mask.stroke(255,0,0,255);
+                this.mask.line(mouseX - this.x, mouseY - this.y, pmouseX - this.x, pmouseY - this.y);
             }
         }
     }
 
     show() {
-
         image(this.photo, this.x, this.y, this.w, this.h);
-
         if (appMode == 'Scale') {
             image(this.tmask, this.x, this.y, this.w, this.h);
         } else {
@@ -98,13 +96,12 @@ class Mask {
         result.save('OutputImage', 'png');
     }
 
-    reset() {
-        this.resize(1);
+    reset(s) {
+        this.resize(s);
         this.mask = createGraphics(this.w, this.h);
         this.tmask = createImage(this.w, this.h);
         this.x = width / 2 - this.w / 2;
         this.y = height / 2 - this.h / 2;
-        console.log(this.w)
     }
 
     pressed() {
