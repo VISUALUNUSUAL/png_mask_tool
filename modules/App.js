@@ -1,6 +1,6 @@
 class Mask {
     constructor(srcPhoto, maxSize) {
-        this.rollover = false; 
+        this.rollover = false; // Is the mouse over the area?\
         this.srcPhoto = srcPhoto;
         this.ratio = srcPhoto.width / srcPhoto.height;
         this.maxSize = maxSize;
@@ -11,7 +11,7 @@ class Mask {
         this.x = width / 2 - this.w / 2;
         this.y = height / 2 - this.h / 2;
 
-        this.resize(this.scale);
+        this.updSize(this.scale);
 
         this.photo = createImage(this.w, this.h);
         this.photo.copy(this.srcPhoto, 0, 0, srcPhoto.width, srcPhoto.height, 0, 0, this.w, this.h);
@@ -24,16 +24,28 @@ class Mask {
         if (appMode == 'Scale') {
             this.tmask = createImage(this.w, this.h);
             this.tmask.copy(this.mask, 0, 0, this.w, this.h, 0, 0, this.w, this.h);
+
         } else {
             this.mask = createGraphics(this.w, this.h);
             this.mask.copy(this.tmask, 0, 0, this.tmask.width, this.tmask.height, 0, 0, this.w, this.h);
         }
     }
 
-    resize(s) {
+    updPos() {
+        this.x += (this.pw - this.w) / 2;
+        this.y += (this.ph - this.h) / 2;
+
+        if (this.dragging) {
+                this.x = mouseX + this.offsetX;
+                this.y = mouseY + this.offsetY;
+        }
+    }
+
+    updSize(s) {
         this.scale = s;
         this.pw = this.w;
         this.ph = this.h;
+
         if (this.ratio < 1) {
             this.w = Math.round(this.maxSize * this.ratio * this.scale);
             this.h = Math.round(this.maxSize * this.scale);
@@ -41,25 +53,27 @@ class Mask {
             this.w = Math.round(this.maxSize * this.scale);
             this.h = Math.round(this.maxSize / this.ratio * this.scale);
         }
-        this.x += (this.pw - this.w) / 2;
-        this.y += (this.ph - this.h) / 2;
-
-        if (this.dragging) {
-            this.x = mouseX + this.offsetX;
-            this.y = mouseY + this.offsetY;
-        }
+        this.updPos();
     }
 
-    drawMask(brushSize) {
-        this.brushSize = brushSize;
-        if (mouseIsPressed) {
-            if (appMode == 'Brush') {
-//                this.mask.noStroke();
+    pressed() {
+        if (mouseX > this.x && mouseX < this.x + this.w && mouseY > this.y && mouseY < this.y + this.h) {
+            if (appMode == 'Scale') {
+                this.dragging = true;
+                this.offsetX = this.x - mouseX;
+                this.offsetY = this.y - mouseY;
+                
+
+            } else {
+                this.brushSize = brushSize;
+                this.mask.stroke(240, 62, 62);
                 this.mask.strokeWeight(this.brushSize);
-                this.mask.stroke(255,0,0,255);
-                this.mask.line(mouseX - this.x, mouseY - this.y, pmouseX - this.x, pmouseY - this.y);
+                this.mask.line(pmouseX - this.x, pmouseY - this.y, mouseX - this.x, mouseY - this.y, );
             }
         }
+    }
+    released() {
+        this.dragging = false;
     }
 
     show() {
@@ -70,6 +84,7 @@ class Mask {
             image(this.mask, this.x, this.y, this.w, this.h);
         }
     }
+    
     output(_content, _mask) {
         //Create the mask as image
         var img = createImage(_mask.width, _mask.height);
@@ -77,6 +92,7 @@ class Mask {
         img.loadPixels();
         for (var i = 0; i < img.pixels.length; i += 4) {
             var v = img.pixels[i];
+            if (v > 0) v = 255;
             img.pixels[i] = 0;
             img.pixels[i + 1] = 0;
             img.pixels[i + 2] = 0;
@@ -90,31 +106,20 @@ class Mask {
         contentImg.mask(img)
         return contentImg;
     }
-
+    
     save() {
         let result = this.output(this.srcPhoto, this.mask);
         result.save('OutputImage', 'png');
     }
 
-    reset(s) {
-        this.resize(s);
+    reset() {
+        this.updSize(1);
         this.mask = createGraphics(this.w, this.h);
         this.tmask = createImage(this.w, this.h);
         this.x = width / 2 - this.w / 2;
         this.y = height / 2 - this.h / 2;
+        console.log(this.w)
     }
 
-    pressed() {
-        if (mouseX > this.x && mouseX < this.x + this.w && mouseY > this.y && mouseY < this.y + this.h) {
-            if (appMode == 'Scale') {
-                this.dragging = true;
-                this.offsetX = this.x - mouseX;
-                this.offsetY = this.y - mouseY;
-            }
-        }
-    }
 
-    released() {
-        this.dragging = false;
-    }
 }

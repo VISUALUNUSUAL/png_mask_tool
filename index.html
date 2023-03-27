@@ -2,38 +2,15 @@
 <html lang="en">
 
 <head>
-    <title>PNG Transparency mask tool v.05</title>
+    <title>PNG Transparency mask tool v.07</title>
     <link rel="stylesheet" type="text/css" href="./css/style.css">
     <script src="./lib/p5.js"></script>
     <meta charset="utf-8" />
 </head>
 
 <body>
-    <div id="sidebar">
-
-        <div class="row">
-            <p>Zoom</p>
-            <input type="range" id="zoomRange" min="8" max="120" value="50" steps="2">
-        </div>
-        <div class="row">
-            <p>Size</p>
-            <input type="range" id="sizeRange" min="8" max="120" value="50" steps="2">
-        </div>
-        <div class="row">
-            <p>App Mode</p>
-            <div><span>Zoom</span><input type="checkbox" id="zoom"></div>
-            <div><span>Brush</span><input type="checkbox" id="brush" checked="true"></div>
-        </div>
-        <div class="row">
-            <p><a href="#" id="saveCanvas">Save & Clear</a></p>
-        </div>        <div class="row">
-            <p><a href="#" id="clearCanvas">Clear</a></p>
-        </div>
-    </div>
-
-
     <script src="main.js"></script>
-    <script src="./modules/dragg.js"></script>
+    <script src="./modules/App.js"></script>
     <script src="./modules/gui.js"></script>
 </body>
 
