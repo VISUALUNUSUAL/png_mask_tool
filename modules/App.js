@@ -78,11 +78,15 @@ class Mask {
 
     show() {
         image(this.photo, this.x, this.y, this.w, this.h);
+        push();
+        tint(255,0,0,150);
         if (appMode == 'Scale') {
             image(this.tmask, this.x, this.y, this.w, this.h);
         } else {
             image(this.mask, this.x, this.y, this.w, this.h);
         }
+        noTint();
+        pop();
     }
     
     output(_content, _mask) {
