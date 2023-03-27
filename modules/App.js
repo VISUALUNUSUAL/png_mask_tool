@@ -56,6 +56,7 @@ class Mask {
             if (appMode == 'Brush') {
 //                 this.mask.noStroke();
 //                 this.mask.fill(255);
+                this.mask.stroke(240, 62, 62);
                 this.mask.strokeWeight(this.brushSize);
                 this.mask.ellipse(mouseX - this.x, mouseY - this.y, this.brushSize);
                 this.mask.line(pmouseX - this.x, pmouseY - this.y, mouseX - this.x, mouseY - this.y, );
