@@ -1,5 +1,4 @@
 function createUI() {
-
     modeRadio = createRadio();
     modeRadio.position(32, 32);
     modeRadio.option('Brush');
@@ -31,14 +30,9 @@ function createUI() {
     scaleSlider.hide();
 }
 
-
-
 function modeSelect() {
-
     appMode = modeRadio.value();
     mask.appMode(appMode);
-    console.log(zoom)
-
     if (appMode == 'Scale') {
         brushSlider.hide();
         scaleSlider.show();
