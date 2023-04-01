@@ -122,7 +122,6 @@ class Mask {
         this.tmask = createImage(this.w, this.h);
         this.x = width / 2 - this.w / 2;
         this.y = height / 2 - this.h / 2;
-        console.log(this.w)
     }
 
 
